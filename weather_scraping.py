@@ -28,7 +28,6 @@ def post():
     resp = requests.get('https://api.weather.com/v3/location/search?apiKey=d522aa97197fd864d36b418f39ebb323&format='
                         'json&language=en-IN&locationType=locale&query={}'.format(place), verify=False)
 
-    print(resp)
     if resp.status_code == 200:
 
         content = resp.content
