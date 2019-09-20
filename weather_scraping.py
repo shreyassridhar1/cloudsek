@@ -18,7 +18,7 @@ def post():
     my_city = None
     params = request.json
     place = params.get('place')
-    type = params.get('type', 'daily')
+    view_type = params.get('type', '5day')
     time = params.get('time', datetime.now())
     response = None
 
@@ -42,16 +42,16 @@ def post():
                                             # to the first city
                                             # received in the json data
 
-        if type == 'today':
-            response = today(type, my_placeId, my_city)
-        elif type == 'hourbyhour':
-            response = multi(type, my_placeId, my_city)
-        elif type == '5day':
-            response = multi(type, my_placeId, my_city)
-        elif type == 'tenday':
-            response = multi(type, my_placeId, my_city)
-        elif type == 'weekend':
-            response = weekend(type, my_placeId, my_city)
+        if view_type == 'today':
+            response = today(view_type, my_placeId, my_city)
+        elif view_type == 'hourbyhour':
+            response = multi(view_type, my_placeId, my_city)
+        elif view_type == '5day':
+            response = multi(view_type, my_placeId, my_city)
+        elif view_type == 'tenday':
+            response = multi(view_type, my_placeId, my_city)
+        elif view_type == 'weekend':
+            response = weekend(view_type, my_placeId, my_city)
 
         return jsonify(response)
 
@@ -59,8 +59,8 @@ def post():
         return jsonify('Bad Request')
 
 # Today weather data
-def today(type, my_placeId, my_city):
-    response = requests.get('https://weather.com/en-IN/weather/{}/l/{}'.format(type, my_placeId))
+def today(view_type, my_placeId, my_city):
+    response = requests.get('https://weather.com/en-IN/weather/{}/l/{}'.format(view_type, my_placeId))
 
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -105,9 +105,9 @@ def today(type, my_placeId, my_city):
 
 
 # hourly, 5 day, 10 day weather data
-def multi(type, my_placeId, my_city):
+def multi(view_type, my_placeId, my_city):
     response = requests.get(
-        'https://weather.com/en-IN/weather/{}/l/{}'.format(type, my_placeId))
+        'https://weather.com/en-IN/weather/{}/l/{}'.format(view_type, my_placeId))
     soup = BeautifulSoup(response.text, 'html.parser')
     posts = soup.find('table', class_='twc-table')
     header = posts.find_all('th')
@@ -121,9 +121,9 @@ def multi(type, my_placeId, my_city):
 
 
 # Weekend weather data
-def weekend(type, my_placeId, my_city):
+def weekend(view_type, my_placeId, my_city):
     headers_list = []
-    response = requests.get('https://weather.com/en-IN/weather/{}/l/{}'.format(type, my_placeId))
+    response = requests.get('https://weather.com/en-IN/weather/{}/l/{}'.format(view_type, my_placeId))
     soup = BeautifulSoup(response.text, 'html.parser')
     posts = soup.find('div', class_='weather-table')
     for post in posts.find_all('span', class_=True):
