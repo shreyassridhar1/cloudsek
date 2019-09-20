@@ -1,6 +1,7 @@
 To start the project navigate to this folder using terminal and run ./project.sh
-And you can access the API using Http/localhost:5000/get_data
+And you can access the API using http://localhost:5000/get_data (POST Method)
 Params required for this:-
+(Give JSON data in Body, you could use POSTMAN to hit the API)
 place - (string)
 type - (string) Valid options are ['today' , 'hourbyhour', '5day', 'tenday', 'weekend']
 
